@@ -61,19 +61,18 @@ Em breve será liberado o link do <strong>GRADLE</strong> para o ```compile```, 
                     @Override
                     public void onSuccessJSONObject(JSONObject result) throws JSONException {
 
-                        Toast.makeText(getApplicationContext(), "Sucess!"+String.format("Your IP is: %s", result.getString("ip")),
-                                Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Sucesso na Requisição: Resultado: "+String.format("Seu endereço de IP é: %s", result.getString("ip")),Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onSuccessString(String result) throws Exception {
-                            Toast.makeText(getApplicationContext(), "Sucess! Your IP is: "+result),
-                                Toast.LENGTH_LONG).show();
+                          Toast.makeText(getApplicationContext(), "Sucesso na Requisição: Resultado: Seu Endereçõ de IP é: "+result,Toast.LENGTH_LONG).show();
+
                     }
 
                     @Override
                     public void onError(String result) throws Exception {
-                        Toast.makeText(getApplicationContext(), "Error",
+                        Toast.makeText(getApplicationContext(), "Erro durante a requisição HTTP: Resultado de Erro: "+result,
                                 Toast.LENGTH_LONG).show();
                     }
                 });
