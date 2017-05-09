@@ -3,7 +3,6 @@ package com.synckware.flyhttp;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -25,13 +24,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final TextView txtView = (TextView) findViewById(R.id.txt_ip);
+        final TextView mTextoRespostaServidor = (TextView) findViewById(R.id.txt_ip);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                /**A URL que deseja fazer a requisição:
+                 *Nesse caso vamos utilizar esse site, porque ele retorna no formato JSON o IP do cliente.
+                 **/
                 String SUA_URL = "https://api.ipify.org/?format=json";
 
                 /**Instância da classe FlyHttp
@@ -45,48 +47,53 @@ public class MainActivity extends AppCompatActivity {
 
                 /**
                  * HashMap com os parâmetros que deseja enviar para o servidor por POST
-                 * durante a requisição. No servidor recuperar a chave e o valor
+                 * durante a requisição. No servidor recuperar a chave e o valor.
                  */
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("key", "value");
 
                 /**
-                 * Setando os parâmetros no objeto que fará a requisição.
+                 * Setando os parâmetros do POST no objeto que fará a requisição.
                  */
                 flyHttp.setParametros(params);
 
                 /**
                  * Fazendo a chamada de requisição do servidor:
                  * @buildJSONObject: Retornará os dados em formato JSON
-                 * @buildStringbject: Retornará os dados em formato String
+                 * @buildStringObject: Retornará os dados em formato String
                  *
-                 * @Descrição: VolleyCallback é uma interface que garantira o callback e o tempo de espera:
+                 * @Descrição: RequestCallback é uma interface que garantira o callback e o tempo de espera:
                  * Essa interface implementa 3 métodos:
                  * @onSuccessJSONObject: Resultado da requisição em formato JSONObject
                  * @onSuccessString: Resultado da requisição em formato String
                  * @onError: Chamado quando da erro durante a requisição.
                  */
-                flyHttp.buildJSONObject(new VolleyCallback() {
+                flyHttp.buildJSONObject(new RequestCallback() {
                     @Override
                     public void onSuccessJSONObject(JSONObject result) throws JSONException {
 
-                        Toast.makeText(getApplicationContext(), "Sucess!",
-                                Toast.LENGTH_LONG).show();
-                        txtView.setText(String.format("Your IP is: %s", result.getString("ip")));
-                        txtView.setTextColor(Color.BLUE);
+                        Toast.makeText(getApplicationContext(), "Sucesso na Requisição: Resultado: "+String.format("Seu endereço de IP é: %s", result.getString("ip")),Toast.LENGTH_LONG).show();
+                        mTextoRespostaServidor.setText(String.format("Seu IP é: %s", result.getString("ip")));
+                        mTextoRespostaServidor.setTextColor(Color.BLUE);
+
                     }
 
                     @Override
                     public void onSuccessString(String result) throws Exception {
+                        Toast.makeText(getApplicationContext(), "Sucesso na Requisição: Resultado: Seu Endereçõ de IP é: "+result,Toast.LENGTH_LONG).show();
+                        mTextoRespostaServidor.setText("Seu IP é: "+result);
+                        mTextoRespostaServidor.setTextColor(Color.BLUE);
 
                     }
 
                     @Override
                     public void onError(String result) throws Exception {
-                        Toast.makeText(getApplicationContext(), "Error",
+                        Toast.makeText(getApplicationContext(), "Erro durante a requisição HTTP: Resultado de Erro: "+result,
                                 Toast.LENGTH_LONG).show();
-                        txtView.setText("Error: "+result);
-                        txtView.setTextColor(Color.RED);
+
+                        mTextoRespostaServidor.setText("Error: "+result);
+                        mTextoRespostaServidor.setTextColor(Color.RED);
+
                     }
                 });
             }

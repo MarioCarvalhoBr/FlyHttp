@@ -10,7 +10,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -46,7 +45,7 @@ public class FlyHttp {
         return mParams;
     }
 
-    public void buildStringObject(final VolleyCallback callback) {
+    public void buildStringObject(final RequestCallback callback) {
 
         StringRequest mRequest = new StringRequest(mMetode.getMetode(),
                 URL,
@@ -68,7 +67,7 @@ public class FlyHttp {
                         Log.v("onErrorResponseString: ", error.toString());
                         String err = null;
                         if (error instanceof com.android.volley.NoConnectionError){
-                            err = "No Internet Access!";
+                            err = "Você não está conectado com a Internet";
                         }
                         try {
                             if(err != "null") {
@@ -94,7 +93,7 @@ public class FlyHttp {
 
     }
 
-    public void buildJSONObject(final VolleyCallback callback) {
+    public void buildJSONObject(final RequestCallback callback) {
         CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.GET,
                 URL, null,
                 new Response.Listener<JSONObject>() {
@@ -116,7 +115,7 @@ public class FlyHttp {
                         Log.v("Response", error.toString());
                         String err = null;
                         if (error instanceof com.android.volley.NoConnectionError){
-                            err = "No internet Access!";
+                            err = "Você não está conectado com a Internet";
                         }
                         try {
                             if(err != "null") {
