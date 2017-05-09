@@ -51,13 +51,13 @@ Em breve será liberado o link do <strong>GRADLE</strong> para o ```compile```, 
                  * @buildJSONObject: Retornará os dados em formato JSON
                  * @buildStringbject: Retornará os dados em formato String
                  *
-                 * @Descrição: VolleyCallback é uma interface que garantira o callback e o tempo de espera:
+                 * @Descrição: RequestCallback é uma interface que garantira o callback e o tempo de espera:
                  * Essa interface implementa 3 métodos:
                  * @onSuccessJSONObject: Resultado da requisição em formato JSONObject
                  * @onSuccessString: Resultado da requisição em formato String
                  * @onError: Chamado quando da erro durante a requisição.
                  */
-                flyHttp.buildJSONObject(new VolleyCallback() {
+                flyHttp.buildJSONObject(new RequestCallback() {
                     @Override
                     public void onSuccessJSONObject(JSONObject result) throws JSONException {
 
