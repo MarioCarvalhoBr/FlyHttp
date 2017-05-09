@@ -49,7 +49,7 @@ Em breve será liberado o link do <strong>GRADLE</strong> para o ```compile```, 
                 /**
                  * Fazendo a chamada de requisição do servidor:
                  * @buildJSONObject: Retornará os dados em formato JSON
-                 * @buildStringbject: Retornará os dados em formato String
+                 * @buildStringObject: Retornará os dados em formato String
                  *
                  * @Descrição: RequestCallback é uma interface que garantira o callback e o tempo de espera:
                  * Essa interface implementa 3 métodos:
