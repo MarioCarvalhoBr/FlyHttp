@@ -78,7 +78,7 @@ Em breve será liberado o link do <strong>GRADLE</strong> para o ```compile```, 
                 });
   ```
 
-<b>Seu aplicativo usa essa biblioteca? Você pode promovê-lo aqui! Basta enviar o seu pedido que será feliz em divulgar.</b>
+<b>Seu aplicativo usa essa biblioteca? Você pode promovê-lo aqui! Basta enviar o seu pedido que serei feliz em divulgar.</b>
 
 #Desenvolvido por<br>
 Nome: Mário de Araújo Carvalho<br> 
