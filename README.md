@@ -15,12 +15,71 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
 }
 ```
-Após isso, basta importar o projeto e utilizar a biblioteca.
+Em breve será liberado o link do <strong>GRADLE</strong>para o ```java compile```, por hora você terá de baixar o projeto e utilizar as suas classes:
 
-DOCUMENTAÇÃO AQUI FUTURAMENTE
+<b>ABAIXO segue uma breve DOCUMENTAÇÃO sobre a utilização da biiblioteca.</b>
 
-<br>
-<b>Seu aplicativo usa essa biblioteca? Você pode promovê-lo aqui! Basta enviar o seu pedido que será feliz em divulgar.</b> <br>
+ ```java
+               /**A URL que deseja fazer a requisição:
+               *Nesse caso vamos utilizar esse site, porque ele retorna no formato JSON o IP do cliente.
+               **/
+                String SUA_URL = "https://api.ipify.org/?format=json";
+
+                /**Instância da classe FlyHttp
+                 * Passando 3 parâmetros:
+                 * @Método: POST ou GET
+                 * @URL: Endereço do site que deseja fazer uma requisição
+                 * @Contexto: Contexto para poder fazer a requisição
+                 * */
+
+                FlyHttp flyHttp = new FlyHttp(FlyHttp.Metode.GET, SUA_URL, MainActivity.this);
+
+                /**
+                 * HashMap com os parâmetros que deseja enviar para o servidor por POST
+                 * durante a requisição. No servidor recuperar a chave e o valor
+                 */
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("key", "value");
+
+                /**
+                 * Setando os parâmetros no objeto que fará a requisição.
+                 */
+                flyHttp.setParametros(params);
+
+                /**
+                 * Fazendo a chamada de requisição do servidor:
+                 * @buildJSONObject: Retornará os dados em formato JSON
+                 * @buildStringbject: Retornará os dados em formato String
+                 *
+                 * @Descrição: VolleyCallback é uma interface que garantira o callback e o tempo de espera:
+                 * Essa interface implementa 3 métodos:
+                 * @onSuccessJSONObject: Resultado da requisição em formato JSONObject
+                 * @onSuccessString: Resultado da requisição em formato String
+                 * @onError: Chamado quando da erro durante a requisição.
+                 */
+                flyHttp.buildJSONObject(new VolleyCallback() {
+                    @Override
+                    public void onSuccessJSONObject(JSONObject result) throws JSONException {
+
+                        Toast.makeText(getApplicationContext(), "Sucess!"+String.format("Your IP is: %s", result.getString("ip")),
+                                Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onSuccessString(String result) throws Exception {
+                            Toast.makeText(getApplicationContext(), "Sucess! Your IP is: "+result),
+                                Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(String result) throws Exception {
+                        Toast.makeText(getApplicationContext(), "Error",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+  ```
+
+<b>Seu aplicativo usa essa biblioteca? Você pode promovê-lo aqui! Basta enviar o seu pedido que será feliz em divulgar.</b>
 
 #Desenvolvido por<br>
 Nome: Mário de Araújo Carvalho<br> 
