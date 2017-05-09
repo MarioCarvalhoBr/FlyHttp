@@ -15,7 +15,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
 }
 ```
-Em breve será liberado o link do <strong>GRADLE</strong> para o ```java compile```, por hora você terá de baixar o projeto e utilizar as suas classes:
+Em breve será liberado o link do <strong>GRADLE</strong> para o ```compile```, por hora você terá de baixar o projeto e utilizar as suas classes:
 
 <b>ABAIXO segue uma breve DOCUMENTAÇÃO sobre a utilização da biiblioteca.</b>
 
