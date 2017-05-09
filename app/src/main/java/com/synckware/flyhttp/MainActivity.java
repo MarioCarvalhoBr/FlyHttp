@@ -11,6 +11,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.synckware.flyhttp.library.FlyHttp;
+import com.synckware.flyhttp.library.RequestCallback;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 

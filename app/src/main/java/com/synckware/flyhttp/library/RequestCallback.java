@@ -1,4 +1,4 @@
-package com.synckware.flyhttp;
+package com.synckware.flyhttp.library;
 
 /**
  * Created by Mário de Araújo Carvalho on 09/05/2017.

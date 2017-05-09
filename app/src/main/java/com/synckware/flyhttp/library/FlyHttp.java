@@ -1,4 +1,4 @@
-package com.synckware.flyhttp;
+package com.synckware.flyhttp.library;
 
 import android.content.Context;
 import android.util.Log;
