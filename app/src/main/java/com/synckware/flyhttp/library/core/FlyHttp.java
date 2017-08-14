@@ -19,6 +19,7 @@ package com.synckware.flyhttp.library.core;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -105,7 +106,7 @@ public class FlyHttp {
         if(InternetUtil.checkConnection(mContext)){
             createdRequisition(callback);
         }else{
-            Log.e("FlyHttp",""+InternetUtil.NO_CONNECTED);
+            Toast.makeText(mContext, ""+InternetUtil.NO_CONNECTED, Toast.LENGTH_SHORT).show();
             Log.e("FlyHttp","Requisição finalizada...");
             finishProgrees();
         }
@@ -122,8 +123,9 @@ public class FlyHttp {
         if(InternetUtil.checkConnection(mContext)){
             createdRequisition(callback);
         }else{
-            Log.e("FlyHttp",""+InternetUtil.NO_CONNECTED);
+            Toast.makeText(mContext, ""+InternetUtil.NO_CONNECTED, Toast.LENGTH_SHORT).show();
             Log.e("FlyHttp","Requisição finalizada...");
+            finishProgrees();
         }
 
     }

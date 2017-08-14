@@ -84,18 +84,6 @@ public class MainActivity extends AppCompatActivity {
                 //Requisição com progress na tela - opicional
                 flyHttp.setWithProgress(true);
 
-                /**
-                 * Fazendo a chamada de requisição do servidor:
-                 * @buildJSONObject: Retornará os dados em formato JSON
-                 * @buildStringObject: Retornará os dados em formato String
-                 *
-                 * @Descrição: RequestCallback é uma interface que garantira o callback e o tempo de espera:
-                 * Essa interface implementa 3 métodos:
-                 * @onSuccessJSONObject: Resultado da requisição em formato JSONObject
-                 * @onSuccessString: Resultado da requisição em formato String
-                 * @onError: Chamado quando da erro durante a requisição.
-                 */
-
                 //Criando a requisição web do tipo String - Obrigatório
                 flyHttp.build(new OnCallbackResponseString() {
                     @Override
@@ -154,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.requisicao_simples) {
 
             //Exemplo de uma requisição simples
-            FlyHttp http = new FlyHttp(Metode.POST, "https://api.ipify.org/?format=json",MainActivity.this);
+            FlyHttp http = new FlyHttp(Metode.GET, "https://api.ipify.org/?format=json",MainActivity.this);
             http.build(new OnCallbackResponseString() {
                 @Override
                 public void onSuccessString(String result) throws Exception {
@@ -171,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         }else if(id == R.id.requisicao_get){
             //Exemplo de uma requisição simples
             String URL_GET = "https://api.ipify.org/?format=json";
-            FlyHttp http = new FlyHttp(Metode.POST, URL_GET, MainActivity.this);
+            FlyHttp http = new FlyHttp(Metode.GET, URL_GET, MainActivity.this);
 
             http.build(new OnCallbackResponseString() {
                 @Override
@@ -228,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
             //Exemplo de uma requisição simples com progress
 
             //O progress pode ser ativado via construtor (4º paramâmetro)
-            FlyHttp http = new FlyHttp(Metode.POST, "https://api.ipify.org/?format=json", MainActivity.this, true);
+            FlyHttp http = new FlyHttp(Metode.GET, "https://api.ipify.org/?format=json", MainActivity.this, true);
             //Ou Pode ser ativado via método set
             //http.setWithProgress(true);
 
