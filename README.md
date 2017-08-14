@@ -15,6 +15,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
 }
 
+```
 Lembrando que aplicações que usam conexões com a internet precisam da permissões pra internet no AndroidManifest.xml
 
 <b>AndroidManifest.xml</b>
