@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-package com.synckware.flyhttp.library;
+package com.synckware.flyhttp.library.controller;
 
 import android.content.Context;
 
@@ -22,7 +22,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
-
+/**
+ * @Description: Classe responsável por fornecer uma instância única para as requisições HTTP.
+ * @Obs: Utilizado o padrão de projeto Singleton, segundo as recomendações do Google
+ * Created by Mário de Araújo Carvalho on 09/05/2017.
+ */
 public class VolleyControllerSingleton {
     private static VolleyControllerSingleton mInstance;
     private RequestQueue mRequestQueue;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-package com.synckware.flyhttp.library;
+package com.synckware.flyhttp.library.custom;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -29,15 +29,18 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
-
-public class CustomJSONObjectRequest extends Request<JSONObject> {
+/**
+ * @Description: Classe customizada para permitir uma requição HTTP e retorno em formato JSON
+ * Created by Mário de Araújo Carvalho on 09/05/2017.
+ */
+public class CustomJsonRequest extends Request<JSONObject> {
 
     private Listener<JSONObject> listener;
     private Map<String, String> params;
     Priority mPriority;
 
-    public CustomJSONObjectRequest(int method, String url, Map<String, String> params,
-                                   Listener<JSONObject> responseListener, ErrorListener errorListener) {
+    public CustomJsonRequest(int method, String url, Map<String, String> params,
+                             Listener<JSONObject> responseListener, ErrorListener errorListener) {
         super(method, url, errorListener);
         this.listener = responseListener;
         this.params = params;

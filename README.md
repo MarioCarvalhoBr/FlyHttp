@@ -14,68 +14,83 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.google.code.gson:gson:2.6.2'
 }
+
+Lembrando que aplicações que usam conexões com a internet precisam da permissões pra internet no AndroidManifest.xml
+
+<b>AndroidManifest.xml</b>
+
+```xml
+dependencies {
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+}
 ```
 Em breve será liberado o link do <strong>GRADLE</strong> para o ```compile```, por hora você terá de baixar o projeto e utilizar as suas classes:
 
 <b>ABAIXO segue uma breve DOCUMENTAÇÃO sobre a utilização da biiblioteca.</b>
 
  ```java
-               /**A URL que deseja fazer a requisição:
-               *Nesse caso vamos utilizar esse site, porque ele retorna no formato JSON o IP do cliente.
-               **/
-                String SUA_URL = "https://api.ipify.org/?format=json";
+		//String com a URL desejada para a requisição web.
+		String SUA_URL =  "https://api.ipify.org/?format=json";
 
-                /**Instância da classe FlyHttp
-                 * Passando 3 parâmetros:
-                 * @Método: POST ou GET
-                 * @URL: Endereço do site que deseja fazer uma requisição
-                 * @Contexto: Contexto para poder fazer a requisição
-                 * */
+		//Instância da biblioteca
+		FlyHttp flyHttp = new FlyHttp(MainActivity.this);
 
-                FlyHttp flyHttp = new FlyHttp(FlyHttp.Metode.GET, SUA_URL, MainActivity.this);
+		//Parâmetros mínimos para uma requição - obrigatórios
+		flyHttp.setURL(SUA_URL);
+		flyHttp.setMetode(Metode.POST);
 
-                /**
-                 * HashMap com os parâmetros que deseja enviar para o servidor por POST
-                 * durante a requisição. No servidor recuperar a chave e o valor
-                 */
-                HashMap<String, String> params = new HashMap<String, String>();
-                params.put("key", "value");
+		//Requisição com progress na tela - opicional
+		flyHttp.setWithProgress(true);
 
-                /**
-                 * Setando os parâmetros no objeto que fará a requisição.
-                 */
-                flyHttp.setParametros(params);
+		//Criando um formulário para passar dados pra web - opicional
+		FormKeyValue<String, String> params = new FormKeyValue<String, String>();
+		//Setando os valores no formulário do tipo chave e valor
+		params.put("Key", "Value");
 
-                /**
-                 * Fazendo a chamada de requisição do servidor:
-                 * @buildJSONObject: Retornará os dados em formato JSON
-                 * @buildStringObject: Retornará os dados em formato String
-                 *
-                 * @Descrição: RequestCallback é uma interface que garantira o callback e o tempo de espera:
-                 * Essa interface implementa 3 métodos:
-                 * @onSuccessJSONObject: Resultado da requisição em formato JSONObject
-                 * @onSuccessString: Resultado da requisição em formato String
-                 * @onError: Chamado quando da erro durante a requisição.
-                 */
-                flyHttp.buildJSONObject(new RequestCallback() {
+		//Passando um formulário na requisição
+		flyHttp.setParams(params);
+
+		//Criando a requisição web do tipo String - Obrigatório
+                flyHttp.build(new OnCallbackResponseString() {
+                    @Override
+                    public void onSuccessString(String result) throws Exception {//Sucesso na requisição - Obrigatório
+                        Toast.makeText(getApplicationContext(), "Sucesso na Requisição: Resultado: "
+			+String.format("Seu endereço de IP é: %s", result),Toast.LENGTH_LONG).show();
+                        mTextoRespostaServidor.setText(String.format("Seu IP é: %s", result));
+                        mTextoRespostaServidor.setTextColor(Color.BLUE);
+
+                    }
+                    @Override
+                    public void onError(String result) throws Exception {//Erro na requisição - Obrigatório
+                        Log.e("onError: ", result);
+                        Toast.makeText(getApplicationContext(), "Erro durante a requisição HTTP: Resultado de Erro: "+
+			result, Toast.LENGTH_LONG).show();
+                        mTextoRespostaServidor.setText("Error: "+result);
+                        mTextoRespostaServidor.setTextColor(Color.RED);
+                    }
+                });
+		//Criando a requisição web do tipo Json - Obrigatório
+                flyHttp.build(new OnCallbackResponseJson() {
                     @Override
                     public void onSuccessJSONObject(JSONObject result) throws JSONException {
-
-                        Toast.makeText(getApplicationContext(), "Sucesso na Requisição: Resultado: "+String.format("Seu endereço de IP é: %s", result.getString("ip")),Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onSuccessString(String result) throws Exception {
-                          Toast.makeText(getApplicationContext(), "Sucesso na Requisição: Resultado: Seu Endereçõ de IP é: "+result,Toast.LENGTH_LONG).show();
-
+                        Toast.makeText(getApplicationContext(), "Sucesso na Requisição: Resultado: "+
+			String.format("Seu endereço de IP é: %s", result.getString("ip")),Toast.LENGTH_LONG).show();
+                        mTextoRespostaServidor.setText(String.format("Seu IP é: %s", result.getString("ip")));
+                        mTextoRespostaServidor.setTextColor(Color.BLUE);
                     }
 
                     @Override
                     public void onError(String result) throws Exception {
                         Toast.makeText(getApplicationContext(), "Erro durante a requisição HTTP: Resultado de Erro: "+result,
                                 Toast.LENGTH_LONG).show();
+
+                        mTextoRespostaServidor.setText("Error: "+result);
+                        mTextoRespostaServidor.setTextColor(Color.RED);
                     }
                 });
+	
+	
   ```
 
 <b>Seu aplicativo usa essa biblioteca? Você pode promovê-lo aqui! Basta enviar o seu pedido que serei feliz em divulgar.</b>

@@ -22,14 +22,18 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.synckware.flyhttp.library.FlyHttp;
-import com.synckware.flyhttp.library.RequestCallback;
+import com.synckware.flyhttp.library.core.FlyHttp;
+import com.synckware.flyhttp.library.interfaces.OnCallbackResponseJson;
+import com.synckware.flyhttp.library.interfaces.OnCallbackResponseString;
+import com.synckware.flyhttp.library.post.FormKeyValue;
+import com.synckware.flyhttp.library.utils.Metode;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,14 +41,14 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
-
+    private TextView mTextoRespostaServidor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final TextView mTextoRespostaServidor = (TextView) findViewById(R.id.txt_ip);
+        mTextoRespostaServidor = (TextView) findViewById(R.id.txt_ip);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                  * @Contexto: Contexto para poder fazer a requisição
                  * */
 
-                FlyHttp flyHttp = new FlyHttp(FlyHttp.Metode.GET, SUA_URL, MainActivity.this);
+                FlyHttp flyHttp = new FlyHttp(Metode.GET, SUA_URL, MainActivity.this);
 
                 /**
                  * HashMap com os parâmetros que deseja enviar para o servidor por POST
@@ -75,7 +79,10 @@ public class MainActivity extends AppCompatActivity {
                 /**
                  * Setando os parâmetros do POST no objeto que fará a requisição.
                  */
-                flyHttp.setParametros(params);
+                flyHttp.setParams(params);
+
+                //Requisição com progress na tela - opicional
+                flyHttp.setWithProgress(true);
 
                 /**
                  * Fazendo a chamada de requisição do servidor:
@@ -88,22 +95,31 @@ public class MainActivity extends AppCompatActivity {
                  * @onSuccessString: Resultado da requisição em formato String
                  * @onError: Chamado quando da erro durante a requisição.
                  */
-                flyHttp.buildJSONObject(new RequestCallback() {
-                    @Override
-                    public void onSuccessJSONObject(JSONObject result) throws JSONException {
 
-                        Toast.makeText(getApplicationContext(), "Sucesso na Requisição: Resultado: "+String.format("Seu endereço de IP é: %s", result.getString("ip")),Toast.LENGTH_LONG).show();
-                        mTextoRespostaServidor.setText(String.format("Seu IP é: %s", result.getString("ip")));
+                //Criando a requisição web do tipo String - Obrigatório
+                flyHttp.build(new OnCallbackResponseString() {
+                    @Override
+                    public void onSuccessString(String result) throws Exception {//Sucesso na requisição - Obrigatório
+                        Toast.makeText(getApplicationContext(), "Sucesso na Requisição: Resultado: "+String.format("Seu endereço de IP é: %s", result),Toast.LENGTH_LONG).show();
+                        mTextoRespostaServidor.setText(String.format("Seu IP é: %s", result));
                         mTextoRespostaServidor.setTextColor(Color.BLUE);
 
                     }
-
                     @Override
-                    public void onSuccessString(String result) throws Exception {
-                        Toast.makeText(getApplicationContext(), "Sucesso na Requisição: Resultado: Seu Endereçõ de IP é: "+result,Toast.LENGTH_LONG).show();
-                        mTextoRespostaServidor.setText("Seu IP é: "+result);
-                        mTextoRespostaServidor.setTextColor(Color.BLUE);
+                    public void onError(String result) throws Exception {//Erro na requisição - Obrigatório
+                        Log.e("onError: ", result);
+                        Toast.makeText(getApplicationContext(), "Erro durante a requisição HTTP: Resultado de Erro: "+result, Toast.LENGTH_LONG).show();
+                        mTextoRespostaServidor.setText("Error: "+result);
+                        mTextoRespostaServidor.setTextColor(Color.RED);
+                    }
+                });
 
+                flyHttp.build(new OnCallbackResponseJson() {
+                    @Override
+                    public void onSuccessJSONObject(JSONObject result) throws JSONException {
+                        Toast.makeText(getApplicationContext(), "Sucesso na Requisição: Resultado: "+String.format("Seu endereço de IP é: %s", result.getString("ip")),Toast.LENGTH_LONG).show();
+                        mTextoRespostaServidor.setText(String.format("Seu IP é: %s", result.getString("ip")));
+                        mTextoRespostaServidor.setTextColor(Color.BLUE);
                     }
 
                     @Override
@@ -113,9 +129,9 @@ public class MainActivity extends AppCompatActivity {
 
                         mTextoRespostaServidor.setText("Error: "+result);
                         mTextoRespostaServidor.setTextColor(Color.RED);
-
                     }
                 });
+
             }
         });
     }
@@ -127,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -134,9 +151,100 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.requisicao_simples) {
+
+            //Exemplo de uma requisição simples
+            FlyHttp http = new FlyHttp(Metode.POST, "https://api.ipify.org/?format=json",MainActivity.this);
+            http.build(new OnCallbackResponseString() {
+                @Override
+                public void onSuccessString(String result) throws Exception {
+                    Toast.makeText(MainActivity.this, "Resposta: "+result, Toast.LENGTH_SHORT).show();
+                    mTextoRespostaServidor.setText(String.format("Seu IP é: %s", result));
+                    mTextoRespostaServidor.setTextColor(Color.BLUE);
+                }
+                @Override
+                public void onError(String result) throws Exception {
+                    Toast.makeText(MainActivity.this, "Erro: "+result, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }else if(id == R.id.requisicao_get){
+            //Exemplo de uma requisição simples
+            String URL_GET = "https://api.ipify.org/?format=json";
+            FlyHttp http = new FlyHttp(Metode.POST, URL_GET, MainActivity.this);
+
+            http.build(new OnCallbackResponseString() {
+                @Override
+                public void onSuccessString(String result) throws Exception {
+                    Toast.makeText(MainActivity.this, "Resposta: "+result, Toast.LENGTH_SHORT).show();
+                    mTextoRespostaServidor.setText(String.format("Seu IP é: %s", result));
+                    mTextoRespostaServidor.setTextColor(Color.BLUE);
+                }
+                @Override
+                public void onError(String result) throws Exception {
+                    Toast.makeText(MainActivity.this, "Erro: "+result, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }else if(id == R.id.requisicao_post){
+
+            //String com a URL desejada para a requisição web.
+            String SUA_URL =  "https://api.ipify.org/?format=json";
+
+            //Instância da biblioteca
+            FlyHttp flyHttp = new FlyHttp(MainActivity.this);
+
+            //Parâmetros mínimos para uma requição - obrigatórios
+            flyHttp.setURL(SUA_URL);
+            flyHttp.setMetode(Metode.POST);
+
+            //Requisição com progress na tela - opicional
+            flyHttp.setWithProgress(true);
+
+            //Criando um formulário para passar dados pra web - opicional
+            FormKeyValue<String, String> params = new FormKeyValue<String, String>();
+            //Setando os valores no formulário do tipo chave e valor
+            params.put("Key", "Value");
+           
+            //Passando um formulário na requisição
+            flyHttp.setParams(params);
+
+            //Criando a requisição web do tipo String - Obrigatório
+            flyHttp.build(new OnCallbackResponseString() {
+                @Override
+                public void onSuccessString(String result) throws Exception {//Sucesso na requisição - Obrigatório
+                    Toast.makeText(MainActivity.this, "Resposta: "+result, Toast.LENGTH_SHORT).show();
+                    mTextoRespostaServidor.setText(String.format("Seu IP é: %s", result));
+                    mTextoRespostaServidor.setTextColor(Color.BLUE);
+
+                }
+                @Override
+                public void onError(String result) throws Exception {//Erro na requisição - Obrigatório
+                    Log.e("onError: ", result);
+                }
+            });
+
+        }else if(id == R.id.requisicao_with_progress){
+            //Exemplo de uma requisição simples com progress
+
+            //O progress pode ser ativado via construtor (4º paramâmetro)
+            FlyHttp http = new FlyHttp(Metode.POST, "https://api.ipify.org/?format=json", MainActivity.this, true);
+            //Ou Pode ser ativado via método set
+            //http.setWithProgress(true);
+
+            http.build(new OnCallbackResponseString() {
+                @Override
+                public void onSuccessString(String result) throws Exception {
+                    Toast.makeText(MainActivity.this, "Resposta: "+result, Toast.LENGTH_SHORT).show();
+                    mTextoRespostaServidor.setText(String.format("Seu IP é: %s", result));
+                    mTextoRespostaServidor.setTextColor(Color.BLUE);
+                }
+                @Override
+                public void onError(String result) throws Exception {
+                    Toast.makeText(MainActivity.this, "Erro: "+result, Toast.LENGTH_SHORT).show();
+                }
+            });
+
         }
 
         return super.onOptionsItemSelected(item);
