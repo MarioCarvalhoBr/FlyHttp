@@ -3,6 +3,7 @@ FlyHttp library for http client requests and served with Android.
 
 É uma biblioteca simples, para fazer requisições web de formar simples e prática.
 
+### 1º - Adicionar as dependências
 Ela utiliza o Volley para facilitar o envio de dados para web. Logo, as únicas dependências que você terá de adicionar será a
 da biblioteca Volley e GSON do Google:
 
@@ -16,6 +17,8 @@ dependencies {
 }
 
 ```
+#### 2º - Adicionar as permissões pra internet
+
 Lembrando que aplicações que usam conexões com a internet precisam da permissões pra internet no AndroidManifest.xml
 
 <b>AndroidManifest.xml</b>
@@ -46,55 +49,54 @@ Em breve será liberado o link do <strong>GRADLE</strong> para o ```compile```, 
 
 		//Criando um formulário para passar dados pra web - opicional
 		FormKeyValue<String, String> params = new FormKeyValue<String, String>();
-		//Setando os valores no formulário do tipo chave e valor
-		params.put("Key", "Value");
+
+        //Setando os valores no formulário do tipo chave e valor
+		params.put("Key1", "Value1");
+        params.put("Key2", "Value2");
 
 		//Passando um formulário na requisição
 		flyHttp.setParams(params);
 
 		//Criando a requisição web do tipo String - Obrigatório
-                flyHttp.build(new OnCallbackResponseString() {
-                    @Override
-                    public void onSuccessString(String result) throws Exception {//Sucesso na requisição - Obrigatório
-                        Toast.makeText(getApplicationContext(), "Sucesso na Requisição: Resultado: "
-			+String.format("Seu endereço de IP é: %s", result),Toast.LENGTH_LONG).show();
-                        mTextoRespostaServidor.setText(String.format("Seu IP é: %s", result));
-                        mTextoRespostaServidor.setTextColor(Color.BLUE);
-
-                    }
-                    @Override
-                    public void onError(String result) throws Exception {//Erro na requisição - Obrigatório
-                        Log.e("onError: ", result);
-                        Toast.makeText(getApplicationContext(), "Erro durante a requisição HTTP: Resultado de Erro: "+
-			result, Toast.LENGTH_LONG).show();
-                        mTextoRespostaServidor.setText("Error: "+result);
-                        mTextoRespostaServidor.setTextColor(Color.RED);
-                    }
-                });
+        flyHttp.build(new OnCallbackResponseString() {
+            @Override
+            public void onSuccessString(String result) throws Exception {//Sucesso na requisição - Obrigatório
+                Log.i("Result", String.format("Seu endereço de IP é: %s", result);
+            }
+            @Override
+            public void onError(String result) throws Exception {//Erro na requisição - Obrigatório
+                Log.e("onError: ", result);
+            }
+        });
+        
 		//Criando a requisição web do tipo Json - Obrigatório
-                flyHttp.build(new OnCallbackResponseJson() {
-                    @Override
-                    public void onSuccessJSONObject(JSONObject result) throws JSONException {
-                        Toast.makeText(getApplicationContext(), "Sucesso na Requisição: Resultado: "+
-			String.format("Seu endereço de IP é: %s", result.getString("ip")),Toast.LENGTH_LONG).show();
-                        mTextoRespostaServidor.setText(String.format("Seu IP é: %s", result.getString("ip")));
-                        mTextoRespostaServidor.setTextColor(Color.BLUE);
-                    }
+        flyHttp.build(new OnCallbackResponseJson() {
+            @Override
+            public void onSuccessJSONObject(JSONObject result) throws JSONException {
+                String text = String.format("Seu endereço de IP é: %s", result.getString("ip");
+                Log.i("Result", String.format("Seu endereço de IP é: %s", text);
+            }
 
-                    @Override
-                    public void onError(String result) throws Exception {
-                        Toast.makeText(getApplicationContext(), "Erro durante a requisição HTTP: Resultado de Erro: "+result,
-                                Toast.LENGTH_LONG).show();
-
-                        mTextoRespostaServidor.setText("Error: "+result);
-                        mTextoRespostaServidor.setTextColor(Color.RED);
-                    }
-                });
+            @Override
+            public void onError(String result) throws Exception {
+                Log.e("onError: ", result);
+            }
+        });
 	
 	
   ```
+#Documentação
+<b>
+    Para mais detalhes da biblioteca, acesse o <a href="https://github.com/MarioDeAraujoCarvalho/FlyHttp/blob/master/Mini-Cookbook-FlyHttp.pdf" target="_blank">Mini Cookbook</a>, nele você encontrará mais informações sobre o funcionamento da biblioteca.
+</b>
 
+#Promova-se
 <b>Seu aplicativo usa essa biblioteca? Você pode promovê-lo aqui! Basta enviar o seu pedido que serei feliz em divulgar.</b>
+## Aplicativos que usam a biblioteca
+* IF-Agenda
+* CCN
+* GHG-Protocol
+* Arbopasto
 
 #Desenvolvido por<br>
 Nome: Mário de Araújo Carvalho<br> 
