@@ -17,7 +17,7 @@ dependencies {
 }
 
 ```
-#### 2º - Adicionar as permissões pra internet
+### 2º - Adicionar as permissões pra internet
 
 Lembrando que aplicações que usam conexões com a internet precisam da permissões pra internet no AndroidManifest.xml
 
@@ -51,7 +51,7 @@ Em breve será liberado o link do <strong>GRADLE</strong> para o ```compile```, 
 		FormKeyValue<String, String> params = new FormKeyValue<String, String>();
 
         //Setando os valores no formulário do tipo chave e valor
-		params.put("Key1", "Value1");
+        params.put("Key1", "Value1");
         params.put("Key2", "Value2");
 
 		//Passando um formulário na requisição
@@ -85,12 +85,13 @@ Em breve será liberado o link do <strong>GRADLE</strong> para o ```compile```, 
 	
 	
   ```
-#Documentação
+# Documentação
+
 <b>
     Para mais detalhes da biblioteca, acesse o <a href="https://github.com/MarioDeAraujoCarvalho/FlyHttp/blob/master/Mini-Cookbook-FlyHttp.pdf" target="_blank">Mini Cookbook</a>, nele você encontrará mais informações sobre o funcionamento da biblioteca.
 </b>
 
-#Promova-se
+# Promova-se
 <b>Seu aplicativo usa essa biblioteca? Você pode promovê-lo aqui! Basta enviar o seu pedido que serei feliz em divulgar.</b>
 ## Aplicativos que usam a biblioteca
 * IF-Agenda
@@ -98,13 +99,13 @@ Em breve será liberado o link do <strong>GRADLE</strong> para o ```compile```, 
 * GHG-Protocol
 * Arbopasto
 
-#Desenvolvido por<br>
+# Desenvolvido por<br>
 Nome: Mário de Araújo Carvalho<br> 
 E-mail: mariodearaujocarvalho@gmail.com<br>
 Título: FlyHttp
 <br>
 
-#Licença
+# Licença
 ``` 
         Copyright 2017 Mário de Araújo Carvalho
  
